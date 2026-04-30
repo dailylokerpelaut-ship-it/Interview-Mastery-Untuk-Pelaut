@@ -1,6 +1,53 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  <!-- Google tag (gtag.js) - Daily Loker Pelaut -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NR05C7B09B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+
+    gtag('js', new Date());
+    gtag('config', 'G-NR05C7B09B', {
+      page_title: document.title,
+      page_location: window.location.href,
+      send_page_view: true
+    });
+
+    gtag('event', 'dlp_pelaut_home_loaded', {
+      event_category: 'Landing Page',
+      page_name: 'pelaut_book_landing',
+      page_url: window.location.href
+    });
+
+    function trackDLPEvent(eventName, params){
+      if (typeof gtag === 'function') {
+        gtag('event', eventName, Object.assign({
+          event_category: 'Book Landing Page',
+          page_name: 'pelaut_book_landing',
+          page_url: window.location.href,
+          transport_type: 'beacon'
+        }, params || {}));
+      }
+    }
+
+    function scrollToOrder(source){
+      trackDLPEvent('book_order_section_click', {
+        button_source: source || 'unknown'
+      });
+      var order = document.getElementById('order');
+      if(order) order.scrollIntoView({behavior:'smooth'});
+    }
+
+    function openTracked(url, eventName, source){
+      trackDLPEvent(eventName, {
+        button_source: source || 'unknown',
+        link_url: url
+      });
+      window.open(url, '_blank');
+    }
+  </script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interview Mastery untuk Pelaut — Daily Loker Pelaut</title>
@@ -199,7 +246,7 @@ h2{font-family:'Lora',serif;font-size:26px;font-weight:700;color:#1a2a1e;line-he
       <span class="price-now">Rp 179.000</span>
     </div>
     <p class="price-note">Harga tetap · Tidak ada kenaikan · Stok tersedia</p>
-    <button class="btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Beli Sekarang — Rp 179.000 →</button>
+    <button class="btn" onclick="scrollToOrder('hero_cta')">Beli Sekarang — Rp 179.000 →</button>
     <a href="#isi" class="btn2">Lihat dulu apa isi bukunya →</a>
     <p class="fnote">Buku fisik · Pengiriman ke seluruh Indonesia · Bayar via QRIS / Transfer</p>
   </div>
@@ -388,12 +435,12 @@ h2{font-family:'Lora',serif;font-size:26px;font-weight:700;color:#1a2a1e;line-he
         <div class="ir"><div class="ick">✓</div><div><p class="it">Framework STAR & PREP siap pakai</p><p class="is">Cara menjawab yang rapi dan meyakinkan — bukan hafalan</p></div></div>
         <div class="ir"><div class="ick">✓</div><div><p class="it">Strategi interview online — Zoom & WhatsApp Call</p><p class="is">Termasuk tips tampil profesional di kamera</p></div></div>
       </div>
-      <button class="btn" onclick="window.open('https://lynk.id/dailylokerpelautmerchandise','_blank')">Beli via Lynk.id — Rp 179.000 →</button>
+      <button class="btn" onclick="openTracked('https://lynk.id/dailylokerpelautmerchandise','book_order_lynk_click','order_card')">Beli via Lynk.id — Rp 179.000 →</button>
       <p style="font-size:13px;color:var(--ink3);text-align:center;margin-top:8px">QRIS · Virtual Account · e-Wallet · Kartu Kredit</p>
       <div class="mdiv"><div></div><span>atau beli di marketplace</span><div></div></div>
       <div class="mg">
-        <button class="mb" onclick="window.open('https://id.shp.ee/br73rhs','_blank')" onmouseover="this.style.borderColor='#ee4d2d'" onmouseout="this.style.borderColor='var(--border)'"><p class="mn" style="color:#ee4d2d">Shopee</p><p class="mk">Gratis ongkir · COD</p></button>
-        <button class="mb" onclick="window.open('https://tinyurl.com/4rc4tkt9','_blank')" onmouseover="this.style.borderColor='#010101'" onmouseout="this.style.borderColor='var(--border)'"><p class="mn" style="color:#010101">TikTok Shop</p><p class="mk">Gratis ongkir · COD</p></button>
+        <button class="mb" onclick="openTracked('https://id.shp.ee/br73rhs','book_order_shopee_click','marketplace_grid')" onmouseover="this.style.borderColor='#ee4d2d'" onmouseout="this.style.borderColor='var(--border)'"><p class="mn" style="color:#ee4d2d">Shopee</p><p class="mk">Gratis ongkir · COD</p></button>
+        <button class="mb" onclick="openTracked('https://tinyurl.com/4rc4tkt9','book_order_tiktok_click','marketplace_grid')" onmouseover="this.style.borderColor='#010101'" onmouseout="this.style.borderColor='var(--border)'"><p class="mn" style="color:#010101">TikTok Shop</p><p class="mk">Gratis ongkir · COD</p></button>
       </div>
       <p style="font-size:12px;color:var(--ink3);text-align:center;margin-top:9px">Harga sama di semua channel</p>
     </div>
@@ -433,7 +480,7 @@ h2{font-family:'Lora',serif;font-size:26px;font-weight:700;color:#1a2a1e;line-he
   <div class="w">
     <h2>Rezeki kapal luar negeri itu nyata.<br>Tapi harus kamu kejar.</h2>
     <p>Dia tidak datang ke yang hanya nunggu dan berharap. Dia datang ke pelaut yang siap tampil, siap dipercaya, dan siap belajar. Buku ini ada untuk menemani kamu ke sana.</p>
-    <button class="btn" style="max-width:380px;margin:0 auto;display:block" onclick="window.open('https://lynk.id/dailylokerpelautmerchandise','_blank')">Beli Sekarang — Rp 179.000 →</button>
+    <button class="btn" style="max-width:380px;margin:0 auto;display:block" onclick="openTracked('https://lynk.id/dailylokerpelautmerchandise','book_order_lynk_click','final_cta')">Beli Sekarang — Rp 179.000 →</button>
     <p style="font-size:12px;color:rgba(255,255,255,.25);margin-top:12px">Buku fisik · Pengiriman seluruh Indonesia · Harga tetap</p>
   </div>
 </div>
@@ -442,7 +489,7 @@ h2{font-family:'Lora',serif;font-size:26px;font-weight:700;color:#1a2a1e;line-he
 <div class="sk" id="sk">
   <div class="ski">
     <div class="skl"><p class="lbl">Tersedia sekarang</p><p class="prc">Rp 179.000</p></div>
-    <button class="skb" onclick="window.open('https://lynk.id/dailylokerpelautmerchandise','_blank')">Beli Sekarang →</button>
+    <button class="skb" onclick="openTracked('https://lynk.id/dailylokerpelautmerchandise','book_order_lynk_click','sticky_bar')">Beli Sekarang →</button>
   </div>
 </div>
 
