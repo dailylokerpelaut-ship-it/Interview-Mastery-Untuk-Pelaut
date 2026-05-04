@@ -1,51 +1,112 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <!-- Google tag (gtag.js) - Daily Loker Pelaut -->
+  <!-- DLP GA4 Tracking — Book 1 Pelaut Landing Page -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-NR05C7B09B"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
 
     gtag('js', new Date());
+
     gtag('config', 'G-NR05C7B09B', {
       page_title: document.title,
       page_location: window.location.href,
+      page_path: window.location.pathname,
       send_page_view: true
     });
 
-    gtag('event', 'dlp_pelaut_home_loaded', {
-      event_category: 'Landing Page',
-      page_name: 'pelaut_book_landing',
-      page_url: window.location.href
-    });
-
     function trackDLPEvent(eventName, params){
-      if (typeof gtag === 'function') {
-        gtag('event', eventName, Object.assign({
-          event_category: 'Book Landing Page',
-          page_name: 'pelaut_book_landing',
-          page_url: window.location.href,
-          transport_type: 'beacon'
-        }, params || {}));
-      }
+      if (typeof gtag !== "function") return;
+
+      gtag("event", eventName, Object.assign({
+        event_category: "Book Landing Page",
+        page_name: "pelaut_book_landing",
+        page_title: document.title,
+        page_url: window.location.href,
+        page_path: window.location.pathname,
+        page_query: window.location.search || "",
+        hostname: window.location.hostname,
+        product: "interview_mastery_pelaut",
+        transport_type: "beacon"
+      }, params || {}));
     }
 
+    trackDLPEvent("dlp_pelaut_home_loaded", {
+      event_label: "Book 1 landing page loaded"
+    });
+
     function scrollToOrder(source){
-      trackDLPEvent('book_order_section_click', {
-        button_source: source || 'unknown'
+      trackDLPEvent("book_order_section_click", {
+        event_label: "Scroll to order section",
+        button_source: source || "unknown"
       });
-      var order = document.getElementById('order');
-      if(order) order.scrollIntoView({behavior:'smooth'});
+
+      var order = document.getElementById("order");
+      if(order) order.scrollIntoView({ behavior: "smooth" });
     }
 
     function openTracked(url, eventName, source){
-      trackDLPEvent(eventName, {
-        button_source: source || 'unknown',
+      trackDLPEvent(eventName || "book_external_link_click", {
+        event_label: source || url,
+        button_source: source || "unknown",
         link_url: url
       });
-      window.open(url, '_blank');
+
+      window.open(url, "_blank", "noopener");
     }
+
+    // Extra tracking for links that are not using openTracked()
+    document.addEventListener("DOMContentLoaded", function(){
+      document.addEventListener("click", function(event){
+        var link = event.target.closest("a");
+        if(!link) return;
+
+        var href = link.getAttribute("href") || "";
+        var text = (link.innerText || link.textContent || "").trim();
+
+        if(href.indexOf("#") === 0){
+          trackDLPEvent("book_internal_anchor_click", {
+            event_label: text || href,
+            link_url: href
+          });
+        }
+
+        if(href.indexOf("mailto:") === 0){
+          trackDLPEvent("book_email_click", {
+            event_label: text || "Email click",
+            link_url: href
+          });
+        }
+      });
+
+      var sentScroll = {};
+      function trackScrollDepth(){
+        var doc = document.documentElement;
+        var body = document.body;
+        var scrollTop = window.pageYOffset || doc.scrollTop || body.scrollTop || 0;
+        var docHeight = Math.max(
+          body.scrollHeight, doc.scrollHeight,
+          body.offsetHeight, doc.offsetHeight,
+          body.clientHeight, doc.clientHeight
+        ) - window.innerHeight;
+
+        if(docHeight <= 0) return;
+        var pct = Math.round((scrollTop / docHeight) * 100);
+        [25, 50, 75, 90].forEach(function(mark){
+          if(pct >= mark && !sentScroll[mark]){
+            sentScroll[mark] = true;
+            trackDLPEvent("book_scroll_" + mark, {
+              event_label: "Scroll " + mark + "%",
+              scroll_depth: mark
+            });
+          }
+        });
+      }
+
+      window.addEventListener("scroll", trackScrollDepth, { passive: true });
+      trackScrollDepth();
+    });
   </script>
 
 <meta charset="UTF-8">
@@ -54,7 +115,7 @@
 <meta name="description" content="Panduan lengkap interview untuk semua pelaut Indonesia. Deck, Engine, Rating, Cadet. Beli sekarang Rp 179.000.">
 <meta property="og:title" content="Interview Mastery untuk Pelaut — Daily Loker Pelaut">
 <meta property="og:description" content="Gagal interview bukan karena bodoh — tapi karena tidak tahu strateginya. Panduan lengkap untuk semua pelaut Indonesia. Rp 179.000.">
-<meta property="og:url" content="https://dailylokerpelaut.com/pelaut">
+<meta property="og:url" content="https://pelaut.dailylokerpelaut.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Daily Loker Pelaut">
 <link rel="preconnect" href="https://fonts.googleapis.com">
